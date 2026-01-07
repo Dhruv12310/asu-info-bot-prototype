@@ -32,32 +32,29 @@ A **domain-restricted ASU information chatbot** that answers using only **verifi
 
 ## Architecture (Current Prototype)
 
-Student Browser UI (frontend)
-|
-| POST /query
-v
+Architecture (Current Prototype)
+
+Student Browser UI (Frontend)
+│
+│  POST /query
+▼
 FastAPI API (app/main.py)
-|
-| Intent Filter + Cache + Retrieval + Confidence Gate
-v
+│
+│  Intent Filter → Cache → Retrieval → Confidence Gate
+▼
 FAISS Vector Index (vector_store/asu_index.faiss)
-|
-v
-Top-K Context (from data/raw/*.md)
-|
-v
+│
+│  Top-K Context (from data/raw/*.md)
+▼
 OpenAI GPT-3.5 (formatter only)
-|
-v
-Post-Answer Validator (fail closed)
-|
-v
+│
+│  Post-Answer Validator (fail closed)
+▼
 Response + Sources
 
-yaml
-Copy code
 
-Architecture diagram
+Detailed Architecture Diagram
+
                          ┌───────────────────────────────┐
                          │           End User             │
                          │     (Student / Staff / Admin)  │
@@ -181,12 +178,6 @@ Architecture diagram
 │  - Safe refusal if needed                                       │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
-
-
-
-
-
-
 
 ## Project Structure
 
