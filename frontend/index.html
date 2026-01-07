@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ASU Information Agent</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">ASU</div>
+        <div>
+          <div class="title">ASU Information Agent</div>
+          <div class="subtitle">Verified answers from ASU documents</div>
+        </div>
+      </div>
+      <div class="pill">RAG • Safe • Sources</div>
+    </header>
+
+    <main class="chat">
+      <div id="messages" class="messages"></div>
+      <div id="typing" class="typing hidden">
+        <span></span><span></span><span></span>
+      </div>
+    </main>
+
+    <footer class="composer">
+      <input id="user-input" type="text" placeholder="Ask an ASU-related question…" autocomplete="off" />
+      <button id="send-btn">Send</button>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

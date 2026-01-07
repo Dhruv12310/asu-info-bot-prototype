@@ -1,0 +1,52 @@
+############################
+# Python cache & artifacts
+############################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+build/
+dist/
+.eggs/
+pip-wheel-metadata/
+
+############################
+# Virtual environments
+############################
+venv/
+.venv/
+
+############################
+# Environment variables / secrets
+############################
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+
+############################
+# OS / Editor junk
+############################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+############################
+# Logs
+############################
+*.log
+
+############################
+# Jupyter
+############################
+.ipynb_checkpoints/
+
+############################
+# OPTIONAL: runtime cache only
+############################
+.cache/
+*.cache
