@@ -2,12 +2,12 @@
 
 A **domain-restricted ASU information chatbot** that answers using only **verified ASU documents** via **Retrieval-Augmented Generation (RAG)**.
 
-✅ No “ChatGPT wrapper” behavior  
-✅ Refuses coding/math/external-university questions  
-✅ Answers are **context-only** + **post-validated**  
-✅ Shows **sources** for every answer  
-✅ Built-in **cache + metrics** for demo and auditing  
-✅ Clean API with Swagger docs (`/docs`) and lightweight ChatGPT-like UI
+ No “ChatGPT wrapper” behavior  
+ Refuses coding/math/external-university questions  
+ Answers are **context-only** + **post-validated**  
+ Shows **sources** for every answer  
+ Built-in **cache + metrics** for demo and auditing  
+ Clean API with Swagger docs (`/docs`) and lightweight ChatGPT-like UI
 
 ---
 
@@ -18,12 +18,12 @@ A **domain-restricted ASU information chatbot** that answers using only **verifi
 
 ## What This Project Is (and Isn’t)
 
-### ✅ Is
+### Is
 - A governed ASU-only information assistant
 - RAG pipeline: Markdown → embeddings → FAISS index → retrieval → answer formatting
 - Built to scale toward production architecture (pgvector later)
 
-### ❌ Is not
+### Is not
 - A general-purpose assistant
 - A code tutor / math solver / external admissions guide
 - A “free-form” LLM chat
