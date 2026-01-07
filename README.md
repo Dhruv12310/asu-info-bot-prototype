@@ -57,7 +57,136 @@ Response + Sources
 yaml
 Copy code
 
----
+Architecture diagram
+                         ┌───────────────────────────────┐
+                         │           End User             │
+                         │     (Student / Staff / Admin)  │
+                         └───────────────┬───────────────┘
+                                         │
+                                         │  HTTP (Browser)
+                                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         Frontend UI                              │
+│                    (HTML / CSS / JavaScript)                     │
+│                                                                 │
+│  - ChatGPT-style chat interface                                  │
+│  - Stateless                                                     │
+│  - No business logic                                             │
+│  - Sends user queries                                            │
+│                                                                 │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                │ POST /query
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                        FastAPI Backend                           │
+│                           (app/main.py)                          │
+│                                                                 │
+│  Responsibilities:                                               │
+│  - API routing                                                   │
+│  - CORS handling                                                 │
+│  - Health checks (/health)                                      │
+│  - Metrics exposure (/metrics)                                  │
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                    Query Pipeline                          │  │
+│  │                                                           │  │
+│  │  1. Intent Filter                                          │  │
+│  │     - Blocks coding / math / non-ASU queries                │  │
+│  │                                                           │  │
+│  │  2. Cache Lookup                                           │  │
+│  │     - Returns cached answers when available                 │  │
+│  │                                                           │  │
+│  │  3. Vector Retrieval                                       │  │
+│  │     - Embeds user query                                     │  │
+│  │     - Top-K similarity search                               │  │
+│  │                                                           │  │
+│  │  4. Confidence Gate                                        │  │
+│  │     - Rejects low-similarity results                        │  │
+│  │                                                           │  │
+│  │  5. Answer Generation                                      │  │
+│  │     - LLM used as formatter only                            │  │
+│  │     - Context-limited to retrieved chunks                   │  │
+│  │                                                           │  │
+│  │  6. Post-Answer Validation                                  │  │
+│  │     - Rejects hallucinations / unsafe claims                │  │
+│  │                                                           │  │
+│  │  7. Metrics + Cache Update                                  │  │
+│  │                                                           │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                │ Vector Search
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                        Vector Store                              │
+│                         (FAISS Index)                            │
+│                                                                 │
+│  - Local FAISS index                                             │
+│  - Stores document embeddings                                   │
+│  - Fast nearest-neighbor search                                  │
+│                                                                 │
+│  Files:                                                         │
+│  - vector_store/asu_index.faiss                                 │
+│  - vector_store/metadata.json                                   │
+│                                                                 │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                │ Retrieves relevant chunks
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      Knowledge Base                              │
+│                     (Markdown Documents)                         │
+│                                                                 │
+│  - ASU offices                                                   │
+│  - Contact information                                          │
+│  - Policies                                                     │
+│  - Services                                                     │
+│                                                                 │
+│  Source:                                                        │
+│  - data/raw/*.md                                                │
+│                                                                 │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                │ Context (Top-K Chunks)
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     OpenAI GPT-3.5                               │
+│                                                                 │
+│  Role:                                                          │
+│  - Text formatter                                               │
+│  - NO external knowledge                                        │
+│  - NO reasoning beyond provided context                         │
+│                                                                 │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                │ Draft Answer
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Post-Answer Validator                         │
+│                                                                 │
+│  - Ensures answer is grounded                                   │
+│  - Prevents overconfident tone                                  │
+│  - Enforces ASU-only scope                                      │
+│                                                                 │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                │ Validated Answer + Sources
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         API Response                             │
+│                                                                 │
+│  - Final answer                                                 │
+│  - Source citations                                             │
+│  - Safe refusal if needed                                       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+
+
+
+
+
 
 ## Project Structure
 
