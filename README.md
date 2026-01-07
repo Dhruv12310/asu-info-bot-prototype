@@ -63,31 +63,38 @@ Copy code
 
 asu-info-bot/
 ├── app/
-│ ├── api/
-│ │ ├── query.py # main query pipeline
-│ │ └── test_query.py # local CLI tests
-│ ├── core/
-│ │ ├── intent_filter.py # blocks non-ASU / coding / math
-│ │ ├── confidence.py # similarity threshold gating
-│ │ ├── generator.py # GPT formatter (context-only)
-│ │ ├── post_validator.py # rejects unsafe / ungrounded answers
-│ │ ├── cache.py # memoizes responses
-│ │ └── metrics.py # counters + unanswered questions
-│ ├── ingest.py # builds FAISS + metadata from markdown
-│ └── main.py # FastAPI entrypoint + endpoints
+│   ├── api/
+│   │   ├── query.py            # main guarded query pipeline
+│   │   └── test_query.py       # local CLI tests
+│   │
+│   ├── core/
+│   │   ├── intent_filter.py    # blocks non-ASU / coding / math
+│   │   ├── confidence.py       # similarity threshold gating
+│   │   ├── generator.py        # GPT formatter (context-only)
+│   │   ├── post_validator.py   # rejects unsafe / ungrounded answers
+│   │   ├── cache.py            # memoizes responses
+│   │   └── metrics.py          # counters + unanswered questions
+│   │
+│   ├── ingest.py               # builds FAISS + metadata from markdown
+│   └── main.py                 # FastAPI entrypoint + endpoints
+│
 ├── data/
-│ └── raw/ # ASU knowledge base files (markdown)
+│   └── raw/                    # ASU knowledge base files (markdown)
+│
 ├── vector_store/
-│ ├── asu_index.faiss # generated FAISS index
-│ └── metadata.json # generated metadata for retrieval
+│   ├── asu_index.faiss         # generated FAISS index
+│   └── metadata.json           # generated metadata for retrieval
+│
 ├── frontend/
-│ ├── index.html # ChatGPT-style UI
-│ ├── style.css
-│ └── app.js
-├── .env # NOT committed (OpenAI key)
+│   ├── index.html              # ChatGPT-style UI
+│   ├── style.css
+│   └── app.js
+│
+├── .env                        # NOT committed (OpenAI key)
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+
 
 yaml
 Copy code
